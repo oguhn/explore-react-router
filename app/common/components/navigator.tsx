@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle, NavigationMenuViewport } from "./ui/navigation-menu";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -60,6 +60,8 @@ const links: { label: string; to: string, trigger: boolean, isDisabled: boolean,
 ]
 
 export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
+  const location = useLocation();
+
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
     e.preventDefault();
     const element = document.querySelector(to);
@@ -70,8 +72,6 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   return (
     <div className="flex w-full items-center justify-between h-[60px] bg-transparent/50 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 px-[140px]">
-
-      {/* Category */}
       <div className="flex items-center">
         <div className="flex items-center mr-4">
           <div className="text-2xl text-[#222222] font-bold">
@@ -82,40 +82,46 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
         </div>
         <NavigationMenu>
           <NavigationMenuList>
-            <ul className="flex gap-4 items-center justify-center">
-              {links.map((link) => (
-                <li key={link.to} className={link.isDisabled ? "opacity-50 pointer-events-none" : ""}>
-                  {link.trigger ? (
-                    <a href={link.to} onClick={(e) => handleClick(e, link.to)}>
-                      <NavigationMenuItem>
-                        <NavigationMenuTrigger className="">
-                          {link.label}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent className="">
-                          <ul className="flex flex-col gap-3 p-2 text-nowrap">
-                            {link.submenu.map((submenu) => (
-                              <li key={submenu.to}>
-                                <a href={submenu.to} onClick={(e) => handleClick(e, submenu.to)}>
-                                  <NavigationMenuLink>
-                                    {submenu.label}
-                                  </NavigationMenuLink>
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
-                      </NavigationMenuItem>
-                    </a>
-                  ) : (
-                    <Link to={link.to} onClick={(e) => handleClick(e, link.to)}>
-                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        {link.label}
-                      </NavigationMenuLink>
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {location.pathname === "/" && (
+              <ul className="flex gap-4 items-center justify-center">
+                {
+                  links.map((link) => (
+                    <li key={link.to} className={link.isDisabled ? "opacity-50 pointer-events-none" : ""}>
+                      {link.trigger ? (
+                        <a href={link.to} onClick={(e) => handleClick(e, link.to)}>
+                          <NavigationMenuItem>
+                            <NavigationMenuTrigger className="">
+                              {link.label}
+                            </NavigationMenuTrigger>
+
+                            <NavigationMenuContent className="">
+                              <ul className="flex flex-col gap-3 p-2 text-nowrap">
+                                {link.submenu.map((submenu) => (
+                                  <li key={submenu.to}>
+                                    <a href={submenu.to} onClick={(e) => handleClick(e, submenu.to)}>
+                                      <NavigationMenuLink>
+                                        {submenu.label}
+                                      </NavigationMenuLink>
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </NavigationMenuContent>
+                          </NavigationMenuItem>
+                        </a>
+                      ) : (
+                        <Link to={link.to} onClick={(e) => handleClick(e, link.to)}>
+                          <span className={navigationMenuTriggerStyle()}>
+                            {link.label}
+                          </span>
+                        </Link>
+                      )}
+                    </li>
+                  ))
+                }
+
+              </ul>
+            )}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -125,7 +131,7 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
         {isLoggedIn ? (
           <div>
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                   <AvatarFallback>M</AvatarFallback>
@@ -139,31 +145,46 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem asChild className="cursor-pointer">
                     <Link to="/profile" className="flex items-center">
-                      <UserIcon className="w-4 h-4 mr-2" />
-                      <span>프로필</span>
+                      <div className="flex">
+                        <UserIcon className="w-4 h-4 mr-2" />
+                        <span>프로필</span>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link to="/dashboard" className="flex items-center">
+                      <div className="flex">
+                        <UserIcon className="w-4 h-4 mr-2" />
+                        <span>대쉬보드</span>
+                      </div>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">
                     <Link to="/purchase-history" className="flex items-center">
-                      <ShoppingBagIcon className="w-4 h-4 mr-2" />
-                      <span>구매내역</span>
+                      <div className="flex">
+                        <ShoppingBagIcon className="w-4 h-4 mr-2" />
+                        <span>구매내역</span>
+                      </div>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">
                     <Link to="/settings" className="flex items-center">
-                      <SettingsIcon className="w-4 h-4 mr-2" />
-                      <span>설정</span>
+                      <div className="flex">
+                        <SettingsIcon className="w-4 h-4 mr-2" />
+                        <span>설정</span>
+                      </div>
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-
                 <DropdownMenuItem className="cursor-pointer">
                   <Link to="/logout" className="flex items-center">
-                    <LogOutIcon className="w-4 h-4 mr-2" />
-                    <span>로그아웃</span>
+                    <div className="flex">
+                      <LogOutIcon className="w-4 h-4 mr-2" />
+                      <span>로그아웃</span>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>

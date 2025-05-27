@@ -5,8 +5,7 @@ import { Link } from "react-router"
 import water from "~/assets/images/water.png"
 import workout from "~/assets/images/workout.png"
 import reading from "~/assets/images/reading.png"
-import { ShinyButton } from "~/common/components/ui/shiny-button"
-
+import { ShinyButton } from "../../../common/components/ui/shiny-button"
 
 const actionPickDetails = {
   tryActionPick1: {
@@ -44,7 +43,7 @@ const actionPickDetails = {
   }
 }
 
-export default function ActionPick() {
+const ActionPickPage = () => {
   const { id } = useParams()
   const pick = actionPickDetails[id as keyof typeof actionPickDetails]
 
@@ -52,9 +51,11 @@ export default function ActionPick() {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl font-bold">Action Pick을 찾을 수 없습니다.</h1>
-        <Link to="/" className="mt-4">
-          <Button variant="outline">홈으로 돌아가기</Button>
-        </Link>
+        <Button asChild variant="outline">
+          <Link to="/" className="mt-4">
+            홈으로 돌아가기
+          </Link>
+        </Button>
       </div>
     )
   }
@@ -62,13 +63,14 @@ export default function ActionPick() {
   return (
     <div className="min-h-screen bg-[#F6F4EC] py-20">
       <div className="max-w-6xl mx-auto px-4">
-        <Link to="/" className="inline-block mb-8">
-          <Button variant="ghost" className="flex items-center gap-2">
-            <ChevronLeftIcon className="w-4 h-4" />
-            <span>뒤로가기</span>
-          </Button>
-        </Link>
-
+        <Button variant="ghost" className="flex items-center gap-2">
+          <Link to="/" className="inline-block mb-8">
+            <div className="flex items-center gap-2">
+              <ChevronLeftIcon className="w-4 h-4" />
+              <span>뒤로가기</span>
+            </div>
+          </Link>
+        </Button>
         <div className="flex flex-col items-center">
           <div className="w-full max-w-3xl aspect-square rounded-2xl overflow-hidden mb-12">
             <img
@@ -112,3 +114,5 @@ export default function ActionPick() {
     </div>
   )
 }
+
+export default ActionPickPage;
