@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle, NavigationMenuViewport } from "./ui/navigation-menu";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { SettingsIcon, ShoppingBagIcon, UserIcon } from "lucide-react";
+import { LogInIcon, SettingsIcon, ShoppingBagIcon, UserIcon } from "lucide-react";
 import { LogOutIcon } from "lucide-react";
 
 const links: { label: string; to: string, trigger: boolean, isDisabled: boolean, submenu: { label: string; to: string }[] }[] = [
@@ -89,8 +89,8 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
                     <li key={link.to} className={link.isDisabled ? "opacity-50 pointer-events-none" : ""}>
                       {link.trigger ? (
                         <a href={link.to} onClick={(e) => handleClick(e, link.to)}>
-                          <NavigationMenuItem>
-                            <NavigationMenuTrigger className="">
+                          <NavigationMenuItem className="bg-amber-500">
+                            <NavigationMenuTrigger >
                               {link.label}
                             </NavigationMenuTrigger>
 
@@ -161,19 +161,11 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
                       </div>
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem asChild className="cursor-not-allowed opacity-50">
                     <Link to="/purchase-history" className="flex items-center">
                       <div className="flex">
                         <ShoppingBagIcon className="w-4 h-4 mr-2" />
                         <span>구매내역</span>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Link to="/settings" className="flex items-center">
-                      <div className="flex">
-                        <SettingsIcon className="w-4 h-4 mr-2" />
-                        <span>설정</span>
                       </div>
                     </Link>
                   </DropdownMenuItem>
@@ -191,7 +183,14 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
             </DropdownMenu>
           </div>
         ) : (
-          <div>로그인</div>
+          <div>
+            <Link to="/login" className="flex items-center">
+              <div className="flex items-center hover:opacity-75">
+                <LogInIcon className="w-4 h-4 mr-2" />
+                <span>로그인</span>
+              </div>
+            </Link>
+          </div>
         )}
       </div>
     </div>

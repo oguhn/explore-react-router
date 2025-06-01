@@ -6,6 +6,7 @@ import water from "~/assets/images/water.png"
 import workout from "~/assets/images/workout.png"
 import reading from "~/assets/images/reading.png"
 import { ShinyButton } from "../../../common/components/ui/shiny-button"
+import { getActionPickList } from "../queries"
 
 const actionPickDetails = {
   tryActionPick1: {
@@ -41,6 +42,13 @@ const actionPickDetails = {
       "상상력 발달"
     ]
   }
+}
+
+// fetch -> 테스트할 때만!
+export const loader = async () => {
+  const actionPickList = await getActionPickList()
+  console.log(actionPickList)
+  return actionPickList
 }
 
 const ActionPickPage = () => {

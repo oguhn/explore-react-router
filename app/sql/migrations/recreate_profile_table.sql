@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS user_action_pick;
+DROP TABLE IF EXISTS action_pick;
+DROP TABLE IF EXISTS profile;
+
+CREATE TABLE profile (
+  id SERIAL PRIMARY KEY,
+  user_id UUID NOT NULL UNIQUE,
+  username VARCHAR(50) NOT NULL,
+  display_name VARCHAR(100),
+  bio TEXT,
+  avatar_url VARCHAR(255),
+  email VARCHAR(255) NOT NULL,
+  ai_message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

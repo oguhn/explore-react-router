@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { getActionHistory } from '../queries';
+import type { Route } from './+types/dashboard';
+import { index } from 'drizzle-orm/gel-core';
 
 const userActionHistory = [
   { action: '물 마시기', count: 12 },
@@ -17,10 +20,26 @@ const userRanking = [
   { name: '하준', score: 55 },
 ];
 
-const DashboardPage = () => {
-  useEffect(() => {
-    document.title = 'StepPick | Dashboard';
-  }, []);
+export const loader = async () => {
+  const actionHistory = await getActionHistory()
+  return actionHistory
+}
+
+export function meta() {
+  return [
+    { title: "tepPick | Dashboard" },
+    {
+      property: "og:title",
+      content: "tepPick | Dashboard",
+    },
+    {
+      name: "description",
+      content: " tepPick | Dashboard",
+    },
+  ];
+}
+
+const DashboardPage = ({ loaderData }: { loaderData: { id: number; action: string; count: number }[] }) => {
 
   return (
     <div className="py-20 min-h-screen bg-gradient-to-br from-yellow-50 to-white px-6">
@@ -37,14 +56,14 @@ const DashboardPage = () => {
         <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">📊 나의 행동 히스토리</h2>
           <p className="text-gray-600 mb-6">지난 7일간의 기록을 확인하고, 지속성을 높여보세요.</p>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={userActionHistory} layout="vertical" margin={{ left: 30, right: 30 }}>
+          <ResponsiveContainer width="100%" height={650}>
+            <BarChart data={loaderData} layout="vertical" margin={{ left: 30, right: 30 }}>
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="action" />
               <Tooltip />
               <Bar dataKey="count" radius={[4, 4, 4, 4]}>
-                {userActionHistory.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={index === 0 ? '#facc15' : '#60a5fa'} />
+                {loaderData.map((entry) => (
+                  <Cell key={`cell-${entry.id}`} fill="#60a5fa" />
                 ))}
               </Bar>
             </BarChart>

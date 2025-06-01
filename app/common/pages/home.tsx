@@ -67,11 +67,8 @@ export default function Home() {
               {/* <p className="text-2xl max-w-xl"></p> */}
             </div>
             <div className="flex gap-8 mt-8 items-center justify-center">
-              <div className="flex-1/2 mt-8 bg-gray-100 w-full h-[500px] rounded-xl flex items-center justify-center">
-                <img src={stepPickAbout} alt="character" className="w-full h-full  object-cover rounded-xl" />
-              </div>
-              <div className="flex-1/2 flex flex-col items-center  gap-4">
-                <div>
+              <div className="flex-1/2 flex flex-col items-center justify-center gap-4">
+                <div className="flex flex-col gap-4 text-center">
                   <p className="text-2xl leading-relaxed">
                     작고 부담 없는 행동을 기록하며<br />
                     함께 성장하는 따뜻한 마음 동행 플랫폼입니다.
@@ -81,11 +78,6 @@ export default function Home() {
                     매일의 소소한 선택이 쌓여<br />
                     어느새 삶의 방향을 바꿉니다.
                   </p>
-
-                  <p className="text-2xl leading-relaxed">
-                    스탭픽은 <strong>혼자보다 함께하는 힘</strong>을 믿습니다.
-                  </p>
-
                   <p className="text-2xl leading-relaxed mt-8">
                     나의 하루를 가볍게 적고,<br />
                     서로를 응원하며 꾸준히 이어가고 싶은 사람들을 위한 공간.
@@ -155,14 +147,11 @@ export default function Home() {
         <section id="action-picks" className="px-8 py-20">
           <div className="flex flex-col items-center justify-center">
             <h2 className="text-5xl text-center font- my-8">뉴스</h2>
-            <div className="flex w-128 h-128 bg-amber-100">
+            <div className="flex w-100 h-100 bg-amber-100">
               <img src={widget} alt="widget" className="w-full h-full object-cover rounded-xl" />
             </div>
             <div className="font-bold flex flex-col items-left">
-              <p className="mt-2">StepPick 위젯이 나왔어요!</p>
-              <p className="mt-2">슬퍼하기도,</p>
-              <p className="mt-2">웃기도,</p>
-              <p className="mt-2">피곤해하기도해요..</p>
+              <p className="mt-2 text-xl">StepPick 위젯 업데이트!</p>
             </div>
 
           </div>
