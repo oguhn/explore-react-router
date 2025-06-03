@@ -5,12 +5,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "react-router"
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import Navigator from "./common/components/navigator";
 import Footer from "./common/components/footer";
+import { makeSSRClient } from "./supa-client";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +26,12 @@ export const links: Route.LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
 ];
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request)
+  const { data: user } = await client.auth.getUser()
+  return user
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -46,10 +54,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function App({ loaderData }: Route.ComponentProps) {
+  const navigation = useNavigation()
+  const isLoggedIn = loaderData.user !== null
   return (
     <>
-      <Navigator isLoggedIn={true} />
+      <Navigator isLoggedIn={isLoggedIn} />
       <Outlet />
       <Footer />
     </>

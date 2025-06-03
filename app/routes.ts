@@ -11,5 +11,7 @@ export default [
   route("profile", "features/profile/page/profile.tsx"),
   route("settings", "features/settings/page/settings.tsx"),
   route("purchase-history", "features/purchase-history/page/purchase-history.tsx"),
+  route("login", "features/login/pages/login-page.tsx"),
   route("logout", "features/logout/page/logout.tsx"),
+  route("signup", "features/sign-up/pages/sign-up-page.tsx"),
 ] satisfies RouteConfig;
