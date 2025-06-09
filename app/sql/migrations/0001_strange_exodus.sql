@@ -1,1 +1,0 @@
-ALTER TABLE "user_action_pick" ALTER COLUMN "profile_id" SET DATA TYPE serial;

@@ -8,7 +8,7 @@ import type { Route } from './+types/logout';
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client, headers } = makeSSRClient(request)
   await client.auth.signOut()
-  return redirect("/login", { headers })
+  return redirect("/", { headers })
 }
 
 const LogoutPage = () => {

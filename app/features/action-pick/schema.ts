@@ -1,5 +1,7 @@
-import { boolean, integer, pgTable, serial, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, pgPolicy, pgTable, serial, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { authUid, authenticatedRole } from "drizzle-orm/supabase";
 import { profile } from "../profile/schema";
+import { sql } from "drizzle-orm";
 
 export const actionPick = pgTable("action_pick", {
   id: uuid("id").primaryKey(),
@@ -9,7 +11,21 @@ export const actionPick = pgTable("action_pick", {
   benefits: text("benefits").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+  userId: uuid("user_id").notNull().references(() => profile.userId),
+}, (table) => [
+  pgPolicy("action_pick_policy", {
+    for: "insert",
+    to: authenticatedRole,
+    as: "permissive",
+    withCheck: sql`${authUid} = ${table.userId}`,
+  }),
+  pgPolicy("action-select-policy", {
+    for: "select",
+    to: authenticatedRole,
+    as: "permissive",
+    using: sql`${authUid} = ${table.userId}`,
+  })
+]);
 
 export const userActionPick = pgTable("user_action_pick", {
   id: uuid("id").primaryKey(),

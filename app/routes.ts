@@ -14,4 +14,5 @@ export default [
   route("login", "features/login/pages/login-page.tsx"),
   route("logout", "features/logout/page/logout.tsx"),
   route("signup", "features/sign-up/pages/sign-up-page.tsx"),
+  route("admin/action-pick", "features/admin/pages/post-action-pick.tsx"),
 ] satisfies RouteConfig;
